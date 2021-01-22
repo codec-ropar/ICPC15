@@ -29,7 +29,11 @@ def get_url(username):
 
 def get_rank(username):
     URL = get_url(username)
-    return requests.get(url=URL).json()['result']['rows'][0]['rank']
+    attempts = requests.get(url=URL).json()['result']['rows']
+    for attempt in attempts:
+        if attempt['party']['participantType'] == 'CONTESTANT':
+            return attempt['rank']
+    return 0
 
 
 def get_details(i):
