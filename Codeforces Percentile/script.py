@@ -6,7 +6,7 @@ candidates = pd.read_csv("ICPC15.csv")
 
 processed = []
 
-contestId = '1474'
+contestId = input()
 
 numParticipants = 0
 contestName = ''
