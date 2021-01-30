@@ -22,18 +22,19 @@ def getContestDetails():
     base = 'https://codeforces.com/api/contest.standings?contestId='
     URL = base + contestId + '&showUnofficial=true'
     data = requests.get(url=URL).json()['result']
-    #numParticipants = len(data['rows'])
     contestName = data['contest']['name']
 
 
 def filterIITRPRContestantRanks():
     global data, numParticipants, numVirtual
     ranks = {}
+    rankScore = {}
     allContestants = data['rows']
     for contestant in allContestants:
         username = contestant['party']['members'][0]['handle'].lower()
         participantType = contestant['party']['participantType']
         rank = contestant['rank']
+        penalty = contestant['penalty']
         if participantType == 'VIRTUAL':
             numVirtual += 1
             continue
@@ -42,8 +43,12 @@ def filterIITRPRContestantRanks():
         numParticipants += 1
         if username not in contestants_IITRPR:
             continue
-        print(username, rank, numParticipants, numVirtual)      ##  printed onto console
-        ranks[username] = rank - numVirtual
+        try:
+            ranks[username] = rankScore[str(rank)+'$'+str(penalty)]
+        except:
+            ranks[username] = numParticipants
+            rankScore[str(rank)+'$'+str(penalty)] = numParticipants
+        print(username, rank)                                                   # print to console
     return ranks
 
 
@@ -62,8 +67,7 @@ def getRanks():
 getContestDetails()
 contestants_IITRPR = set(file['Codeforces Username'])
 getRanks()
-# file['Ranks ' + contestName] = RANK                  # uncomment this if you want a column for rank as well
-file['1. Percentiles ' + contestName] = [100 * (1 - i / numParticipants) for i in RANK]
+file[contestName] = [100 * (1 - i / numParticipants) for i in RANK]
 for i in file:
     if i[:7] == 'Unnamed':
         del file[i]
