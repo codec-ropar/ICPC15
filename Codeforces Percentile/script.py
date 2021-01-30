@@ -26,7 +26,7 @@ def getContestDetails():
 
 
 def filterIITRPRContestantRanks():
-    global data, numParticipants, numVirtual
+    global data, numParticipants
     ranks = {}
     rankScore = {}
     allContestants = data['rows']
@@ -35,9 +35,6 @@ def filterIITRPRContestantRanks():
         participantType = contestant['party']['participantType']
         rank = contestant['rank']
         penalty = contestant['penalty']
-        if participantType == 'VIRTUAL':
-            numVirtual += 1
-            continue
         if participantType != 'CONTESTANT':
             continue
         numParticipants += 1
