@@ -35,7 +35,7 @@ def filterIITRPRContestantRanks():
         participantType = contestant['party']['participantType']
         rank = contestant['rank']
         penalty = contestant['penalty']
-        if participantType != 'CONTESTANT':
+        if participantType != 'CONTESTANT' and participantType != 'OUT_OF_COMPETITION':
             continue
         numParticipants += 1
         if username not in contestants_IITRPR:
